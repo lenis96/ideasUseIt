@@ -11,7 +11,7 @@ class IdeaSerializer(serializers.ModelSerializer):
     
     
 class BoardSerializer(serializers.ModelSerializer):
-    ideas= IdeaSerializer(many=True)
+    ideas= IdeaSerializer(many=True,read_only=True)
     class Meta:
 
         model = Board

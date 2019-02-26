@@ -12,6 +12,7 @@ from django.http import Http404
 
 class BoardsList(APIView):
     def get(self,request):
+        request.data['user']=request.GET.get('user')
         boards=Board.objects.filter(Q(user_id=self.request.user.id)|Q(is_public=True)).order_by('-created')
         serrializer=BoardSerializer(boards,many=True)
         return Response(serrializer.data)
@@ -21,6 +22,7 @@ class BoardsList(APIView):
         except Board.DoesNotExist:
             raise Http404
     def post(self,request):
+        request.data['user']=request.META.get('HTTP_TOKEN')
         serializer = BoardSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
