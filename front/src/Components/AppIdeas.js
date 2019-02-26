@@ -8,8 +8,8 @@ import {
   withRouter
 } from 'react-router-dom'
 
-import { Button ,Col} from 'reactstrap';
-import {getBoards} from './../utils/api'
+import { Button ,Col,Modal,ModalBody,ModalHeader,ModalFooter,Form,FormGroup,Input,Label} from 'reactstrap';
+import {getBoards,createBoard} from './../utils/api'
 
 import Board from './Board'
 class AppIdeas extends Component {
@@ -45,16 +45,38 @@ class AppIdeas extends Component {
 
     constructor(props){
         super(props)
-        this.state={boards:[]}
+        this.state={boards:[],modal:false,titleInput:''}
     }
     componentDidMount(){
         getBoards().then(res=>{
-            console.log(res.data)
             this.setState({boards:res.data})
         })
     }
+
+    toggle=()=> {
+        this.setState(prevState => ({
+          modal: !prevState.modal
+        }));
+      }
+    createBoard=()=>{
+        console.log("board Created:" +this.state.titleInput)
+        if(this.state.titleInput!==''){
+            createBoard({title:this.state.titleInput}).then(res=>{
+                getBoards().then(res=>{ //TODO ver si no hacer otra vez la peticion
+                    this.setState({boards:res.data,titleInput:''})
+                })
+                this.toggle()
+            })
+        }
+        else{
+
+        }
+    }
+
+    changeInputTitle=(event)=>{
+        this.setState({titleInput:event.target.value})
+    }
     render(){
-        console.log(this.state)
         return (
             <div className="container">
                 <div className="row">
@@ -73,6 +95,26 @@ class AppIdeas extends Component {
                     })}
 
 
+                </div>
+                <div className="row">
+                    <Button color="success" onClick={this.toggle}>
+                        Create Board
+                    </Button>
+                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                        <ModalHeader toggle={this.toggle}>Create Board</ModalHeader>
+                        <ModalBody>
+                        <Form>
+                           <FormGroup>
+                            <Label for="title Board">Title</Label>
+                            <Input type="text" onChange={this.changeInputTitle} value={this.state.titleInput} name="title" id="title Board" placeholder="Title" />
+                            </FormGroup>
+                        </Form>    
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={this.createBoard}>CreateBoard</Button>{' '}
+                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
                 </div>
             </div>
         )

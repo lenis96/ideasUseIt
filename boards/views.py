@@ -12,8 +12,8 @@ from django.http import Http404
 
 class BoardsList(APIView):
     def get(self,request):
-        request.data['user']=request.GET.get('user')
-        boards=Board.objects.filter(Q(user_id=self.request.user.id)|Q(is_public=True)).order_by('-created')
+        request.data['user']=request.META.get('HTTP_TOKEN')
+        boards=Board.objects.filter(Q(user_id=self.request.data['user'])|Q(is_public=True)).order_by('-created')
         serrializer=BoardSerializer(boards,many=True)
         return Response(serrializer.data)
     def get_object(self, pk):
