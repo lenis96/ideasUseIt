@@ -23,15 +23,19 @@ from users import views as viewsUser
 from boards import views as viewsBoards
 
 router = routers.DefaultRouter()
-router.register(r'users', viewsUser.UserViewSet)
-router.register(r'boards',viewsBoards.BoardViewSet)
-router.register(r'ideas',viewsBoards.IdeaViewSet)
-# router.register(r'login',viewsUser.UserLoginApiView.as_view())
+# router.register(r'users', viewsUser.UserViewSet)
+# router.register(r'boards',viewsBoards.BoardViewSet)
+# router.register(r'ideas',viewsBoards.IdeaViewSet)
 # router.register(r'signup',viewsUser.UserSignupApiView)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    # path('api/', include(router.urls)),
     path('api/login',viewsUser.UserLoginApiView.as_view()),
+    # path('api/signup',viewsUser.),
+    path('api/boards/',viewsBoards.BoardsList.as_view()), 
+    path('api/boards/<int:pk>',viewsBoards.BoardsDetail.as_view()),
+    # path('api/idea'), crear
+    # path('api/idea/<int:id>'), actualizar
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
 ]

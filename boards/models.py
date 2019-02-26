@@ -32,7 +32,7 @@ class Idea(models.Model):
     idea
     """
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    board=models.ForeignKey(Board,on_delete=models.CASCADE)
+    board=models.ForeignKey(Board,on_delete=models.CASCADE,related_name='ideas')
     description=models.TextField(max_length=1000,blank=False,null=False)
     approved=models.BooleanField()
     created=models.DateTimeField(auto_now_add=True)
