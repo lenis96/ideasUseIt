@@ -9,43 +9,15 @@ import {
 } from 'react-router-dom'
 
 import { Button ,Col,Modal,ModalBody,ModalHeader,ModalFooter,Form,FormGroup,Input,Label} from 'reactstrap';
-import {getBoards,createBoard} from './../utils/api'
+import {getBoards,createBoard,createIdea} from './../utils/api'
 
 import Board from './Board'
+import ModalCreateBoard from './ModalCreateBoard'
+import ModalCreateIdea from './ModalCreateIdea'
 class AppIdeas extends Component {
-    // constructor(props){
-    //     super(props)
-    //     this.state= {
-    //       redirectToReferrer: false
-    //     };
-    // }
-    
-    // login = () => {
-    //   this.props.fakeAuth.authenticate(() => {
-    //     this.setState({ redirectToReferrer: true });
-    //   });
-    // };
-    
-    // render() {
-    //     console.log(this.state)
-    //   const { from } = this.props.location.state || { from: { pathname: "/" } };
-    //   const { redirectToReferrer } = this.state;
-  
-    //   if (redirectToReferrer) {
-    //     return <Redirect to={from} />;
-    //   }
-  
-    //   return (
-    //     <div>
-    //       <p>You must log in to view the page at {from.pathname}</p>
-    //       <Button onClick={this.login}>Log in</Button>
-    //     </div>
-    //   );
-    // }
-
     constructor(props){
         super(props)
-        this.state={boards:[],modal:false,titleInput:''}
+        this.state={boards:[],modalCreateBoard:false,titleInput:'',descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
     }
     componentDidMount(){
         getBoards().then(res=>{
@@ -53,19 +25,24 @@ class AppIdeas extends Component {
         })
     }
 
-    toggle=()=> {
+    toggleModalCreateBoard=()=> {
         this.setState(prevState => ({
-          modal: !prevState.modal
+          modalCreateBoard: !prevState.modalCreateBoard
+        }));
+      }
+    toggleModalCreateIdea=(idBoard)=> {
+        this.setState(prevState => ({
+          modalCreateIdea: !prevState.modalCreateIdea,
+          boardId:idBoard
         }));
       }
     createBoard=()=>{
-        console.log("board Created:" +this.state.titleInput)
         if(this.state.titleInput!==''){
             createBoard({title:this.state.titleInput}).then(res=>{
                 getBoards().then(res=>{ //TODO ver si no hacer otra vez la peticion
                     this.setState({boards:res.data,titleInput:''})
                 })
-                this.toggle()
+                this.toggleModalCreateBoard()
             })
         }
         else{
@@ -73,8 +50,22 @@ class AppIdeas extends Component {
         }
     }
 
+    createIdea=()=>{
+        if(this.state.descriptionIdeaInput!==''){
+            createIdea({description:this.state.descriptionIdeaInput,board:this.state.boardId}).then(res=>{
+                getBoards().then(res=>{
+                    this.setState({boards:res.data,descriptionIdeaInput:'',boardId:null})
+                })
+                this.toggleModalCreateIdea()
+            })
+        }
+    }
+
     changeInputTitle=(event)=>{
         this.setState({titleInput:event.target.value})
+    }
+    changeInputDescriptionIdea=(event)=>{
+        this.setState({descriptionIdeaInput:event.target.value})
     }
     render(){
         return (
@@ -88,8 +79,8 @@ class AppIdeas extends Component {
                    
                     {this.state.boards.map(e=>{
                         return (
-                            <Col xs="4" className="mb-4">
-                                <Board key={e.id} title={e.title}  ideas={e.ideas}/>
+                            <Col key={e.id} xs="4" className="mb-4">
+                                <Board idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} title={e.title}  ideas={e.ideas}/>
                             </Col>
                         )
                     })}
@@ -97,24 +88,11 @@ class AppIdeas extends Component {
 
                 </div>
                 <div className="row">
-                    <Button color="success" onClick={this.toggle}>
+                    <Button color="success" onClick={this.toggleModalCreateBoard}>
                         Create Board
                     </Button>
-                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                        <ModalHeader toggle={this.toggle}>Create Board</ModalHeader>
-                        <ModalBody>
-                        <Form>
-                           <FormGroup>
-                            <Label for="title Board">Title</Label>
-                            <Input type="text" onChange={this.changeInputTitle} value={this.state.titleInput} name="title" id="title Board" placeholder="Title" />
-                            </FormGroup>
-                        </Form>    
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={this.createBoard}>CreateBoard</Button>{' '}
-                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
+                    <ModalCreateBoard toogle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} createBoard={this.createBoard} titleInput={this.state.titleInput} changeInputTitle={this.changeInputTitle}/>
+                    <ModalCreateIdea toogle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} createIdea={this.createIdea} descriptionIdeaInput={this.state.descriptionIdeaInput} changeInputDescriptionIdea={this.changeInputDescriptionIdea}/>
                 </div>
             </div>
         )

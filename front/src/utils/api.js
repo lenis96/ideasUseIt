@@ -18,6 +18,13 @@ export function createBoard(board){
     }})
 }
 
+export function createIdea(idea){
+    return axios.post('/api/ideas/',idea,{headers: {
+        'Content-Type': 'application/json',
+        'TOKEN':1
+    }})
+}
+
 // export function deleteProduct(id){
 //     return axios.delete(`/api/product/${id}`)
 // }

@@ -64,6 +64,16 @@ class IdeasList(APIView):
         except Idea.DoesNotExist:
             raise Http404
     def post(self,request):
+        request.data['user']=request.META.get('HTTP_TOKEN')
+
+
+        board=Board.objects.get(pk=request.data['board'])
+        if(request.data['user']==board.user_id):
+            request.data['approved']=True
+        else:
+            request.data['approved']=False
+
+
         serializer = IdeaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

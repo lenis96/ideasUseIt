@@ -22,6 +22,9 @@ class Board extends Component {
     }
     componentDidMount(){
     }
+    handleCreateIdea=()=>{
+        this.props.toggleModalCreateIdea(this.props.idBoard)
+    }
     render(){
         return (
             <div>
@@ -36,7 +39,7 @@ class Board extends Component {
                             })}
                         </ListGroup>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}
-                    <Button color="success">Add Idea</Button>
+                    <Button color="success" onClick={this.handleCreateIdea}>Add Idea</Button>
                     </CardBody>
                 </Card>
             </div>
