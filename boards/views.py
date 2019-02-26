@@ -93,11 +93,10 @@ class IdeasDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        print('actualizando')
         #Validar dueño del tablero
         idea = self.get_object(pk)
-        request.data['user']=idea.user_id
-        request.data['description']=idea.description
+        request.data['user']=idea.user_id#TODO mejorar
+        request.data['description']=idea.description#TODO mejorar
         serializer = IdeaSerializer(idea, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -105,8 +104,10 @@ class IdeasDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        Idea = self.get_object(pk)
-        if(request.META.get('HTTP_TOKEN')==Idea.user_id): #TODO agregar que si es el tablero
-
-            Idea.delete()
+        idea = self.get_object(pk)
+        if(int(request.META.get('HTTP_TOKEN'))==idea.user_id): #TODO agregar que si es el tablero
+            print('lol')
+            idea.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)

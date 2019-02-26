@@ -24,6 +24,7 @@ class AppIdeas extends Component {
     }
 
     toggleModalCreateBoard=()=> {
+        console.log('lel')
         this.setState(prevState => ({
           modalCreateBoard: !prevState.modalCreateBoard
         }));
@@ -93,8 +94,8 @@ class AppIdeas extends Component {
                     <Button color="success" onClick={this.toggleModalCreateBoard}>
                         Create Board
                     </Button>
-                    <ModalCreateBoard toogle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} createBoard={this.createBoard} titleInput={this.state.titleInput} changeInputTitle={this.changeInputTitle}/>
-                    <ModalCreateIdea toogle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} createIdea={this.createIdea} descriptionIdeaInput={this.state.descriptionIdeaInput} changeInputDescriptionIdea={this.changeInputDescriptionIdea}/>
+                    <ModalCreateBoard toggle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} createBoard={this.createBoard} titleInput={this.state.titleInput} changeInputTitle={this.changeInputTitle}/>
+                    <ModalCreateIdea toggle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} createIdea={this.createIdea} descriptionIdeaInput={this.state.descriptionIdeaInput} changeInputDescriptionIdea={this.changeInputDescriptionIdea}/>
                 </div>
             </div>
         )

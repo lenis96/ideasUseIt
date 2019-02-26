@@ -8,7 +8,7 @@ import {
   withRouter
 } from 'react-router-dom'
 
-import { Button } from 'reactstrap';
+import { Button,Form,FormGroup,Label,Input} from 'reactstrap';
   
 
 class Login extends Component {
@@ -24,20 +24,40 @@ class Login extends Component {
         this.setState({ redirectToReferrer: true });
       });
     };
+
+    changeInput=(event)=>{
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+    }
     
     render() {
-        console.log(this.state)
       const { from } = this.props.location.state || { from: { pathname: "/" } };
       const { redirectToReferrer } = this.state;
   
       if (redirectToReferrer) {
         return <Redirect to={from} />;
       }
+      
   
       return (
         <div>
           <p>You must log in to view the page at {from.pathname}</p>
-          <Button onClick={this.login}>Log in</Button>
+          <Form>
+            <FormGroup >
+                <Label>Username or Email</Label>
+                <Input type="text" onChange={this.changeInput} value={this.state.username} name="username"  placeholder="username or email" />
+            </FormGroup>
+            <FormGroup >
+                <Label>Password</Label>
+                <Input type="password" onChange={this.changeInput} value={this.state.password} name="passwords"  placeholder="passwords" />
+            </FormGroup>
+            <Button onClick={this.login}>Log in</Button>
+            </Form>
         </div>
       );
     }

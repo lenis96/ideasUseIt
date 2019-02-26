@@ -9,18 +9,21 @@ import {
 } from 'react-router-dom'
 import Login from './Components/Login'
 import AppIdeas from './Components/AppIdeas'
+import SignupForm from './Components/SignupForm';
 
 
 
 
 const fakeAuth = {
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem('token')?true:false,
   authenticate(cb) {
     this.isAuthenticated = true;
+    localStorage.setItem('token',1)
     setTimeout(cb, 100); // fake async
   },
   signout(cb) {
     this.isAuthenticated = false;
+    localStorage.setItem('token',null)
     setTimeout(cb, 100);
   }
 };
@@ -76,13 +79,13 @@ class App extends Component {
         <AuthButton />
         <ul>
           <li>
-            <Link to="/public">Public Page</Link>
+            <Link to="/app">App</Link>
           </li>
           <li>
-            <Link to="/app">Protected Page</Link>
+            <Link to="/signup">Signup</Link>
           </li>
         </ul>
-        <Route path="/public" component={Public} />
+        <Route path="/signup" component={SignupForm} />
         <Route path="/login" render={(props)=><Login {...props} fakeAuth={fakeAuth}/>} />
         <PrivateRoute path="/app" component={AppIdeas} />
       </div>

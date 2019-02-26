@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export function getBoards(){
     return axios.get('/api/boards/',{headers:{
-        'TOKEN':1
+        'TOKEN':localStorage.getItem('token')
     }})
 }
 
@@ -14,26 +14,26 @@ export function getBoards(){
 export function createBoard(board){
     return axios.post('/api/boards/',board,{headers: {
         'Content-Type': 'application/json',
-        'TOKEN':1
+        'TOKEN':localStorage.getItem('token')
     }})
 }
 
 export function createIdea(idea){
     return axios.post('/api/ideas/',idea,{headers: {
         'Content-Type': 'application/json',
-        'TOKEN':1
+        'TOKEN':localStorage.getItem('token')
     }})
 }
 
 export function deleteIdea(id){
     return axios.delete(`/api/ideas/${id}/`,{headers:{
-        'TOKEN':1
+        'TOKEN':localStorage.getItem('token')
     }})
 }
 
 export function updateIdea(id,idea){
     return axios.put(`/api/ideas/${id}/`,idea,{headers:{
-        'TOKEN':1
+        'TOKEN':localStorage.getItem('token')
     }})
 }
 
