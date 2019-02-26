@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/boards/',viewsBoards.BoardsList.as_view()), 
     path('api/boards/<int:pk>/',viewsBoards.BoardsDetail.as_view()),
     path('api/ideas/',viewsBoards.IdeasList.as_view()),
-    path('api/ideas/<int:id>/',viewsBoards.IdeasDetail.as_view()),
+    path('api/ideas/<int:pk>/',viewsBoards.IdeasDetail.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
 ]

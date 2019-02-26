@@ -35,7 +35,7 @@ class Board extends Component {
                     {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
                         <ListGroup>
                             {this.props.ideas.map((e)=>{
-                                return <Idea key={e.id} description={e.description}/>
+                                return <Idea key={e.id} updateBoards={this.props.updateBoards} ideaId={e.id} user_id={e.user} approved={e.approved} description={e.description}/>
                             })}
                         </ListGroup>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}

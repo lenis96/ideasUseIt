@@ -93,8 +93,12 @@ class IdeasDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
+        print('actualizando')
+        #Validar dueño del tablero
         idea = self.get_object(pk)
-        serializer = IdeaSerializer(Idea, data=request.data)
+        request.data['user']=idea.user_id
+        request.data['description']=idea.description
+        serializer = IdeaSerializer(idea, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -102,5 +106,7 @@ class IdeasDetail(APIView):
 
     def delete(self, request, pk, format=None):
         Idea = self.get_object(pk)
-        Idea.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if(request.META.get('HTTP_TOKEN')==Idea.user_id): #TODO agregar que si es el tablero
+
+            Idea.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)

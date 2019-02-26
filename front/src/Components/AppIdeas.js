@@ -20,9 +20,7 @@ class AppIdeas extends Component {
         this.state={boards:[],modalCreateBoard:false,titleInput:'',descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
     }
     componentDidMount(){
-        getBoards().then(res=>{
-            this.setState({boards:res.data})
-        })
+        this.updateBoards()
     }
 
     toggleModalCreateBoard=()=> {
@@ -36,12 +34,17 @@ class AppIdeas extends Component {
           boardId:idBoard
         }));
       }
+
+    updateBoards=()=>{
+        getBoards().then(res=>{
+            this.setState({boards:res.data})
+        })
+    }
     createBoard=()=>{
         if(this.state.titleInput!==''){
             createBoard({title:this.state.titleInput}).then(res=>{
-                getBoards().then(res=>{ //TODO ver si no hacer otra vez la peticion
-                    this.setState({boards:res.data,titleInput:''})
-                })
+                this.setState({titleInput:''})
+                this.updateBoards()
                 this.toggleModalCreateBoard()
             })
         }
@@ -53,9 +56,8 @@ class AppIdeas extends Component {
     createIdea=()=>{
         if(this.state.descriptionIdeaInput!==''){
             createIdea({description:this.state.descriptionIdeaInput,board:this.state.boardId}).then(res=>{
-                getBoards().then(res=>{
-                    this.setState({boards:res.data,descriptionIdeaInput:'',boardId:null})
-                })
+                this.setState({descriptionIdeaInput:'',boardId:null})
+                this.updateBoards()
                 this.toggleModalCreateIdea()
             })
         }
@@ -80,7 +82,7 @@ class AppIdeas extends Component {
                     {this.state.boards.map(e=>{
                         return (
                             <Col key={e.id} xs="4" className="mb-4">
-                                <Board idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} title={e.title}  ideas={e.ideas}/>
+                                <Board updateBoards={this.updateBoards} idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} title={e.title}  ideas={e.ideas}/>
                             </Col>
                         )
                     })}
