@@ -13,20 +13,20 @@ import SignupForm from './Components/SignupForm';
 
 
 
-
+// console.log(localStorage.getItem('token')==='null')
 const fakeAuth = {
-  isAuthenticated: localStorage.getItem('token')?true:false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    localStorage.setItem('token',1)
-    setTimeout(cb, 100); // fake async
+  isAuthenticated: localStorage.getItem('token')!=null?true:false,
+  authenticate() {
+    if(localStorage.getItem('token')){
+      this.isAuthenticated = true;
+    }
   },
-  signout(cb) {
+  signout() {
     this.isAuthenticated = false;
-    localStorage.setItem('token',null)
-    setTimeout(cb, 100);
+    localStorage.removeItem('token')
   }
 };
+console.log(fakeAuth.isAuthenticated)
 
 const AuthButton = withRouter(
   ({ history }) =>
@@ -35,7 +35,8 @@ const AuthButton = withRouter(
         Welcome!{" "}
         <button
           onClick={() => {
-            fakeAuth.signout(() => history.push("/"));
+            fakeAuth.signout()
+            history.push("/");
           }}
           >
           Sign out

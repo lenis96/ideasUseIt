@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets,status,views
-from users.serializers import UserSerializer, GroupSerializer, UserLoginSerailizer
+from users.serializers import UserSerializer, GroupSerializer, UserLoginSerailizer,UserSignupSerailizer
 from rest_framework.response import Response
 
 
@@ -33,4 +33,14 @@ class UserLoginApiView(views.APIView):
             'token':token
         }
         print(data)
+        return Response(data,status=status.HTTP_201_CREATED)
+class UserSignupApiView(views.APIView):
+    def post(self,request):
+        serializer=UserSignupSerailizer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token=serializer.save()
+        data={
+            'status':'ok',
+            'token':"1"
+        }
         return Response(data,status=status.HTTP_201_CREATED)

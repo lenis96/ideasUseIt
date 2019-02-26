@@ -30,8 +30,8 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     # path('api/', include(router.urls)),
-    path('api/login',viewsUser.UserLoginApiView.as_view()),
-    # path('api/signup',viewsUser.),
+    path('api/login/',viewsUser.UserLoginApiView.as_view()),
+    path('api/signup/',viewsUser.UserSignupApiView.as_view()),
     path('api/boards/',viewsBoards.BoardsList.as_view()), 
     path('api/boards/<int:pk>/',viewsBoards.BoardsDetail.as_view()),
     path('api/ideas/',viewsBoards.IdeasList.as_view()),

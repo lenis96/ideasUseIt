@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 
 import { Button,Form,FormGroup,Input,Label } from 'reactstrap';
+import {signup} from './../utils/api'
   
 
 class SignupForm extends Component {
@@ -32,6 +33,9 @@ class SignupForm extends Component {
 
     registerUser=()=>{
         console.log(this.state)
+        signup(this.state).then(res=>{
+            console.log(res.data)
+        })
     }
     render() {
       return (

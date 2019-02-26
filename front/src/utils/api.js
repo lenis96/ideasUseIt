@@ -1,6 +1,15 @@
 import axios from 'axios';
 // import * as consts from '../config/constants';
 
+export function login(credentials){
+    console.log(credentials)
+    return axios.post('/api/login/',credentials)
+}
+export function signup(user){
+    console.log(user)
+    return axios.post('/api/signup/',user)
+}
+
 export function getBoards(){
     return axios.get('/api/boards/',{headers:{
         'TOKEN':localStorage.getItem('token')

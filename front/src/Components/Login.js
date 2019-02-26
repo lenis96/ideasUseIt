@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 
 import { Button,Form,FormGroup,Label,Input} from 'reactstrap';
+import {login} from './../utils/api'
   
 
 class Login extends Component {
@@ -20,9 +21,12 @@ class Login extends Component {
     }
     
     login = () => {
-      this.props.fakeAuth.authenticate(() => {
-        this.setState({ redirectToReferrer: true });
-      });
+        login({email:this.state.username,password:this.state.password}).then((res)=>{
+            localStorage.setItem('token',res.data.token)
+            this.props.fakeAuth.authenticate()
+            this.setState({ redirectToReferrer: true });
+            
+        })
     };
 
     changeInput=(event)=>{
@@ -54,7 +58,7 @@ class Login extends Component {
             </FormGroup>
             <FormGroup >
                 <Label>Password</Label>
-                <Input type="password" onChange={this.changeInput} value={this.state.password} name="passwords"  placeholder="passwords" />
+                <Input type="password" onChange={this.changeInput} value={this.state.password} name="password"  placeholder="passwords" />
             </FormGroup>
             <Button onClick={this.login}>Log in</Button>
             </Form>
