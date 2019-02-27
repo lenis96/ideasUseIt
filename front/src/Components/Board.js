@@ -13,6 +13,8 @@ import { Card, CardImg, CardText, CardBody,
 import {getBoards} from './../utils/api'
 
 import Idea from './Idea'
+import {IoMdAddCircle} from 'react-icons/io' 
+import './../css/style.css'
 class Board extends Component {
     
 
@@ -26,6 +28,10 @@ class Board extends Component {
         this.props.toggleModalCreateIdea(this.props.idBoard)
     }
     render(){
+        const addIdeaStyle={
+            marginTop:'10px',
+            float:'right'
+        }
         return (
             <div>
                 <Card>
@@ -33,13 +39,13 @@ class Board extends Component {
                     <CardBody>
                     <CardTitle>{this.props.title}</CardTitle>
                     {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
-                        <ListGroup>
+                        <ListGroup class="list-group">
                             {this.props.ideas.map((e)=>{
                                 return <Idea key={e.id} updateBoards={this.props.updateBoards} ideaId={e.id} user_id={e.user} approved={e.approved} description={e.description}/>
                             })}
                         </ListGroup>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}
-                    <Button color="success" onClick={this.handleCreateIdea}>Add Idea</Button>
+                    <Button style={addIdeaStyle} color="link" onClick={this.handleCreateIdea}><IoMdAddCircle color="green" size={48}/></Button>
                     </CardBody>
                 </Card>
             </div>

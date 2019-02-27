@@ -14,6 +14,7 @@ import {getBoards,createBoard,createIdea} from './../utils/api'
 import Board from './Board'
 import ModalCreateBoard from './ModalCreateBoard'
 import ModalCreateIdea from './ModalCreateIdea'
+import {IoMdAddCircle} from 'react-icons/io'
 class AppIdeas extends Component {
     constructor(props){
         super(props)
@@ -71,6 +72,13 @@ class AppIdeas extends Component {
         this.setState({descriptionIdeaInput:event.target.value})
     }
     render(){
+        const addBoardStyle={
+            marginTop:'10px',
+            float:'right'
+        }
+        const ColStyle={
+            marginTop:'32px'
+        }
         return (
             <div className="container">
                 <div className="row">
@@ -82,7 +90,7 @@ class AppIdeas extends Component {
                    
                     {this.state.boards.map(e=>{
                         return (
-                            <Col key={e.id} xs="4" className="mb-4">
+                            <Col style={ColStyle} key={e.id} xs="6" className="mb-6">
                                 <Board updateBoards={this.updateBoards} idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} title={e.title}  ideas={e.ideas}/>
                             </Col>
                         )
@@ -91,11 +99,13 @@ class AppIdeas extends Component {
 
                 </div>
                 <div className="row">
-                    <Button color="success" onClick={this.toggleModalCreateBoard}>
-                        Create Board
+                    <div className="col-12">
+                    <Button style={addBoardStyle} color="link" onClick={this.toggleModalCreateBoard}>
+                        <IoMdAddCircle color='green' size={52}/>
                     </Button>
                     <ModalCreateBoard toggle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} createBoard={this.createBoard} titleInput={this.state.titleInput} changeInputTitle={this.changeInputTitle}/>
                     <ModalCreateIdea toggle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} createIdea={this.createIdea} descriptionIdeaInput={this.state.descriptionIdeaInput} changeInputDescriptionIdea={this.changeInputDescriptionIdea}/>
+                    </div>
                 </div>
             </div>
         )

@@ -11,6 +11,9 @@ import {
 import { Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button,ListGroup,ListGroupItem,ListGroupItemHeading,ListGroupItemText } from 'reactstrap';
 import {updateIdea,deleteIdea} from './../utils/api'
+
+import { FaBeer } from 'react-icons/fa';
+import {IoIosCloseCircleOutline,IoIosCheckmarkCircleOutline} from 'react-icons/io'
 class Idea extends Component {
     
 
@@ -34,20 +37,39 @@ class Idea extends Component {
     }
 
     render(){
+        const deleteButtonStyle={
+            float:'right',
+            marginLeft:'2px',
+            marginRight:'2px',
+        }
+        const buttonRight = {
+            float:'right',
+            marginLeft:'2px',
+            marginRight:'2px',
+        };
+        const circleButton={
+            borderRadius:'50%',
+            float:'right',
+            marginLeft:'2px',
+            marginRight:'2px',
+
+        }
         let deleteButton
         let approveButton
         if(this.props.user_id==1){
-            deleteButton=<Button color="danger" onClick={this.deleteIdea}>X</Button>
+            deleteButton=<Button style={buttonRight} color="link" onClick={this.deleteIdea}><IoIosCloseCircleOutline color="red" size={32}/></Button>
         }
         if(!this.props.approved){
-            approveButton=<Button color="success" on onClick={this.approveIdea}>Ap</Button>
+            approveButton=<Button style={buttonRight} color="link" on onClick={this.approveIdea}><IoIosCheckmarkCircleOutline color="green" size={32}/></Button>
         }
         return (
             <ListGroupItem>
-                <ListGroupItemHeading>{this.props.description}</ListGroupItemHeading>
+                {/* <ListGroupItemHeading>
+                </ListGroupItemHeading> */}
                 <ListGroupItemText>
-                    {approveButton}
+                    {this.props.description}
                     {deleteButton}
+                    {approveButton}
                 </ListGroupItemText>
             </ListGroupItem>
         )

@@ -1,0 +1,11 @@
+.list-group{
+    /* max-height: 300px; */
+    /* margin-bottom: 10px; */
+    /* overflow:scroll; */
+    /* -webkit-overflow-scrolling: touch; */
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 300px;
+    height: 300px;
+}
