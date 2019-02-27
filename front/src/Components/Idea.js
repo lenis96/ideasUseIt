@@ -63,7 +63,7 @@ class Idea extends Component {
             approveButton=<Button style={buttonRight} color="link" on onClick={this.approveIdea}><IoIosCheckmarkCircleOutline color="green" size={32}/></Button>
         }
         return (
-            <ListGroupItem>
+            <ListGroupItem color={!this.props.approved?'warning':''}>
                 {/* <ListGroupItemHeading>
                 </ListGroupItemHeading> */}
                 <ListGroupItemText>

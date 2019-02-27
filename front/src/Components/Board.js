@@ -32,12 +32,13 @@ class Board extends Component {
             marginTop:'10px',
             float:'right'
         }
+        console.log(this.props)
         return (
             <div>
-                <Card>
+                <Card body outline color={this.props.is_public?'success':'primary'}>
                     {/* <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" /> */}
                     <CardBody>
-                    <CardTitle>{this.props.title}</CardTitle>
+                    <CardTitle>{this.props.title} {this.props.is_public?<span>(Public)</span>:<span>(Private)</span>}</CardTitle>
                     {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
                         <ListGroup class="list-group">
                             {this.props.ideas.map((e)=>{

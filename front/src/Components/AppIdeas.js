@@ -91,7 +91,7 @@ class AppIdeas extends Component {
                     {this.state.boards.map(e=>{
                         return (
                             <Col style={ColStyle} key={e.id} xs="6" className="mb-6">
-                                <Board updateBoards={this.updateBoards} idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} title={e.title}  ideas={e.ideas}/>
+                                <Board updateBoards={this.updateBoards} idBoard={e.id} toggleModalCreateIdea={this.toggleModalCreateIdea} {...e}/>
                             </Col>
                         )
                     })}

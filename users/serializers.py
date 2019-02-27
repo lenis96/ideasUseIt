@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+import jwt
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +29,14 @@ class UserLoginSerailizer(serializers.Serializer):
         return data
     def create(self,data):
         # print(data)
-        return "1"#TODO crear jwtdata['email']+'+218TOK'
+        exp_date = timezone.now() + timedelta(days=3)
+        payload = {
+            'user': data['email'],
+            'exp': int(exp_date.timestamp()),
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        print(token.decode())
+        return token.decode()#TODO crear jwtdata['email']+'+218TOK'
 
 
 class UserSignupSerailizer(serializers.Serializer):
@@ -47,4 +58,11 @@ class UserSignupSerailizer(serializers.Serializer):
         #     raise serializers.ValidationError('Invalid Credentials')
         return data
     def create(self,data):
-        return "1"
+        exp_date = timezone.now() + timedelta(days=3)
+        payload = {
+            'user': data['username'],
+            'exp': int(exp_date.timestamp()),
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        print(token.decode())
+        return token.decode()

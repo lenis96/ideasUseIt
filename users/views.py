@@ -25,6 +25,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class UserLoginApiView(views.APIView):
     def post(self,request,*args,**kwargs):
+        print('ndsfjn')
         serializer=UserLoginSerailizer(data=request.data)
         serializer.is_valid(raise_exception=True)
         token=serializer.save()
@@ -41,6 +42,6 @@ class UserSignupApiView(views.APIView):
         token=serializer.save()
         data={
             'status':'ok',
-            'token':"1"
+            'token':token
         }
         return Response(data,status=status.HTTP_201_CREATED)
