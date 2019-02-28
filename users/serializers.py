@@ -36,7 +36,7 @@ class UserLoginSerailizer(serializers.Serializer):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
         print(token.decode())
-        return token.decode()#TODO crear jwtdata['email']+'+218TOK'
+        return {'token':token.decode(),'username':User.objects.get(username=data['email']).id}
 
 
 class UserSignupSerailizer(serializers.Serializer):
@@ -65,4 +65,4 @@ class UserSignupSerailizer(serializers.Serializer):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
         print(token.decode())
-        return token.decode()
+        return {'token':token.decode(),'username':User.objects.get(username=data['email']).id}

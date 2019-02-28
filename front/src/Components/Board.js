@@ -24,15 +24,20 @@ class Board extends Component {
     }
     componentDidMount(){
     }
-    handleCreateIdea=()=>{
-        this.props.toggleModalCreateIdea(this.props.idBoard)
+    handleCreateIdea=(idIdea)=>{
+        if(idIdea){
+            console.log('><',idIdea)
+            this.props.toggleModalCreateIdea(this.props.idBoard,idIdea)
+        }
+        else{
+            this.props.toggleModalCreateIdea(this.props.idBoard,null)
+        }
     }
     render(){
         const addIdeaStyle={
             marginTop:'10px',
             float:'right'
         }
-        console.log(this.props)
         return (
             <div>
                 <Card body outline color={this.props.is_public?'success':'primary'}>
@@ -42,7 +47,7 @@ class Board extends Component {
                     {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
                         <ListGroup class="list-group">
                             {this.props.ideas.map((e)=>{
-                                return <Idea key={e.id} updateBoards={this.props.updateBoards} ideaId={e.id} user_id={e.user} approved={e.approved} description={e.description}/>
+                                return <Idea key={e.id} ShowEditIdea={this.handleCreateIdea} owner_board={this.props.user} updateBoards={this.props.updateBoards} ideaId={e.id} user_id={e.user} approved={e.approved} description={e.description}/>
                             })}
                         </ListGroup>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}

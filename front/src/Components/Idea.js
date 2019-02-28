@@ -56,12 +56,17 @@ class Idea extends Component {
         }
         let deleteButton
         let approveButton
-        if(this.props.user_id==1){
+        let EditButton
+        if(this.props.user_id==localStorage.getItem('username') || localStorage.getItem('username')==this.props.owner_board){
             deleteButton=<Button style={buttonRight} color="link" onClick={this.deleteIdea}><IoIosCloseCircleOutline color="red" size={32}/></Button>
         }
-        if(!this.props.approved){
+        if(!this.props.approved && localStorage.getItem('username')==this.props.owner_board){
             approveButton=<Button style={buttonRight} color="link" on onClick={this.approveIdea}><IoIosCheckmarkCircleOutline color="green" size={32}/></Button>
         }
+        if(localStorage.getItem('username')==this.props.owner_board){
+            EditButton=<Button style={buttonRight} onClick={()=>{console.log(this.props.ideaId);this.props.ShowEditIdea(this.props.ideaId)}} color="success">Edit</Button>
+        }
+
         return (
             <ListGroupItem color={!this.props.approved?'warning':''}>
                 {/* <ListGroupItemHeading>
@@ -69,6 +74,7 @@ class Idea extends Component {
                 <ListGroupItemText>
                     {this.props.description}
                     {deleteButton}
+                    {EditButton}
                     {approveButton}
                 </ListGroupItemText>
             </ListGroupItem>

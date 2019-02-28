@@ -21,7 +21,11 @@ def validateToken(token):
         print(payload)
     except:
         return False # TODO mejorar
-    return 1 #TODO buscard id del usuario
+    try:
+        user=User.objects.get(username=payload['user'])
+    except:
+        return False
+    return user.id
 
 
 from django.contrib.auth.models import User
@@ -110,7 +114,10 @@ class IdeasList(APIView):
         if(request.user.id==board.user_id):
             request.data['approved']=True
         else:
-            request.data['approved']=False
+            if(board.is_public):
+                request.data['approved']=False
+            else:
+                return Response({'message':'you cant create an idea in private board that you not are a owner'},status=status.HTTP_403_FORBIDDEN)
 
         request.data['user']=request.user.id
         serializer = IdeaSerializer(data=request.data)
@@ -133,10 +140,9 @@ class IdeasDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        #Validar dueño del tablero
+        # TODO Validar dueño del tablero
         idea = self.get_object(pk)
         request.data['user']=idea.user_id#TODO mejorar
-        request.data['description']=idea.description#TODO mejorar
         serializer = IdeaSerializer(idea, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -145,7 +151,7 @@ class IdeasDetail(APIView):
 
     def delete(self, request, pk, format=None):
         idea = self.get_object(pk)
-        if(request.user.id==idea.user_id): #TODO agregar que si es el tablero
+        if(request.user.id==idea.user_id or (request.user.id==idea.board.user_id)): #TODO agregar que si es el tablero
             idea.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:

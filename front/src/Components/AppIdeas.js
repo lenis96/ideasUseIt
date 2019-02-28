@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom'
 
 import { Button ,Col,Modal,ModalBody,ModalHeader,ModalFooter,Form,FormGroup,Input,Label} from 'reactstrap';
-import {getBoards,createBoard,createIdea} from './../utils/api'
+import {getBoards} from './../utils/api'
 
 import Board from './Board'
 import ModalCreateBoard from './ModalCreateBoard'
@@ -18,22 +18,22 @@ import {IoMdAddCircle} from 'react-icons/io'
 class AppIdeas extends Component {
     constructor(props){
         super(props)
-        this.state={boards:[],modalCreateBoard:false,titleInput:'',descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
+        this.state={boards:[],modalCreateBoard:false,titleInput:'',publicBoard:null,descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
     }
     componentDidMount(){
         this.updateBoards()
     }
 
     toggleModalCreateBoard=()=> {
-        console.log('lel')
         this.setState(prevState => ({
           modalCreateBoard: !prevState.modalCreateBoard
         }));
       }
-    toggleModalCreateIdea=(idBoard)=> {
+    toggleModalCreateIdea=(idBoard,idIdea)=> {
         this.setState(prevState => ({
           modalCreateIdea: !prevState.modalCreateIdea,
-          boardId:idBoard
+          boardId:idBoard,
+          ideaId:idIdea
         }));
       }
 
@@ -42,35 +42,8 @@ class AppIdeas extends Component {
             this.setState({boards:res.data})
         })
     }
-    createBoard=()=>{
-        if(this.state.titleInput!==''){
-            createBoard({title:this.state.titleInput}).then(res=>{
-                this.setState({titleInput:''})
-                this.updateBoards()
-                this.toggleModalCreateBoard()
-            })
-        }
-        else{
+    
 
-        }
-    }
-
-    createIdea=()=>{
-        if(this.state.descriptionIdeaInput!==''){
-            createIdea({description:this.state.descriptionIdeaInput,board:this.state.boardId}).then(res=>{
-                this.setState({descriptionIdeaInput:'',boardId:null})
-                this.updateBoards()
-                this.toggleModalCreateIdea()
-            })
-        }
-    }
-
-    changeInputTitle=(event)=>{
-        this.setState({titleInput:event.target.value})
-    }
-    changeInputDescriptionIdea=(event)=>{
-        this.setState({descriptionIdeaInput:event.target.value})
-    }
     render(){
         const addBoardStyle={
             marginTop:'10px',
@@ -103,8 +76,8 @@ class AppIdeas extends Component {
                     <Button style={addBoardStyle} color="link" onClick={this.toggleModalCreateBoard}>
                         <IoMdAddCircle color='green' size={52}/>
                     </Button>
-                    <ModalCreateBoard toggle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} createBoard={this.createBoard} titleInput={this.state.titleInput} changeInputTitle={this.changeInputTitle}/>
-                    <ModalCreateIdea toggle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} createIdea={this.createIdea} descriptionIdeaInput={this.state.descriptionIdeaInput} changeInputDescriptionIdea={this.changeInputDescriptionIdea}/>
+                    <ModalCreateBoard toggle={this.toggleModalCreateBoard} modal={this.state.modalCreateBoard} updateBoards={this.updateBoards}/>
+                    <ModalCreateIdea ideaId={this.state.ideaId} boardId={this.state.boardId} toggle={this.toggleModalCreateIdea} modal={this.state.modalCreateIdea} updateBoards={this.updateBoards}/>
                     </div>
                 </div>
             </div>

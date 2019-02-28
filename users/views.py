@@ -32,7 +32,8 @@ class UserLoginApiView(views.APIView):
         token=serializer.save()
         data={
             'status':'ok',
-            'token':token
+            'token':token['token'],
+            'username':token['username']
         }
         print(data)
         return Response(data,status=status.HTTP_201_CREATED)
@@ -64,6 +65,7 @@ class UserSignupApiView(views.APIView):
         token=serializer.save()
         data={
             'status':'ok',
-            'token':token
+            'token':token['token'],
+            'username':token['username']
         }
         return Response(data,status=status.HTTP_201_CREATED)

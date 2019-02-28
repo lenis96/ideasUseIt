@@ -23,6 +23,7 @@ class Login extends Component {
     login = () => {
         login({email:this.state.username,password:this.state.password}).then((res)=>{
             localStorage.setItem('token',res.data.token)
+            localStorage.setItem('username',res.data.username)
             this.props.fakeAuth.authenticate()
             this.setState({ redirectToReferrer: true });
             

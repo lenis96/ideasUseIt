@@ -49,6 +49,10 @@ class SignupForm extends Component {
         formData.append('passwordConfirmation',this.state.passwordConfirmation)
         signup(formData).then(res=>{
             console.log(res.data)
+            localStorage.setItem('token',res.data.token)
+            localStorage.setItem('username',res.data.username)
+            this.props.fakeAuth.authenticate()
+            this.setState({ redirectToReferrer: true });
         })
     }
     render() {

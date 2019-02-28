@@ -42,6 +42,12 @@ export function deleteIdea(id){
     }})
 }
 
+export function getIdea(id){
+    return axios.get(`/api/ideas/${id}`,{headers:{
+        'TOKEN':localStorage.getItem('token')
+    }})
+}
+
 export function updateIdea(id,idea){
     return axios.put(`/api/ideas/${id}/`,idea,{headers:{
         'TOKEN':localStorage.getItem('token')
