@@ -16,24 +16,38 @@ class SignupForm extends Component {
     constructor(props){
         super(props)
         this.state= {
-            firstName:'',
-            lastName:''
+            firstName:'First',
+            lastName:'Last',
+            username:'user3',
+            email:'a@gmail.com',
+            password:'qwertyuio',
+            passwordConfirmation:'qwertyuio',
+            identificationNumber:'fds'
         };
     }
     
     changeInput=(event)=>{
+        console.log(event.target.files)
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
     
         this.setState({
-          [name]: value
+          [name]: name=='photo'?event.target.files[0]:value
         });
     }
 
     registerUser=()=>{
-        console.log(this.state)
-        signup(this.state).then(res=>{
+        let formData = new FormData();
+        formData.append('photo',this.state.photo)
+        formData.append('firstName',this.state.firstName)
+        formData.append('lastName',this.state.lastName)
+        formData.append('username',this.state.username)
+        formData.append('email',this.state.email)
+        formData.append('identificationNumber',this.state.identificationNumber)
+        formData.append('password',this.state.password)
+        formData.append('passwordConfirmation',this.state.passwordConfirmation)
+        signup(formData).then(res=>{
             console.log(res.data)
         })
     }

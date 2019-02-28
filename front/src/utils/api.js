@@ -7,7 +7,9 @@ export function login(credentials){
 }
 export function signup(user){
     console.log(user)
-    return axios.post('/api/signup/',user)
+    return axios.post('/api/signup/',user,{headers: {
+        'Content-Type': 'multipart/form-data'
+      }})
 }
 
 export function getBoards(){
