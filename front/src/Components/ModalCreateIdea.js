@@ -51,6 +51,7 @@ class ModalCreateIdea extends Component{
         this.setState({descriptionIdeaInput:event.target.value})
     }
     render(){
+        console.log(this.props.ideaId)
         let button
         if(this.props.ideaId){
 

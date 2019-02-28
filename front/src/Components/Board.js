@@ -25,6 +25,7 @@ class Board extends Component {
     componentDidMount(){
     }
     handleCreateIdea=(idIdea)=>{
+        console.log('pppp',idIdea)
         if(idIdea){
             console.log('><',idIdea)
             this.props.toggleModalCreateIdea(this.props.idBoard,idIdea)
@@ -51,7 +52,7 @@ class Board extends Component {
                             })}
                         </ListGroup>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}
-                    <Button style={addIdeaStyle} color="link" onClick={this.handleCreateIdea}><IoMdAddCircle color="green" size={48}/></Button>
+                    <Button style={addIdeaStyle} color="link" onClick={()=>{this.handleCreateIdea(null)}}><IoMdAddCircle color="green" size={48}/></Button>
                     </CardBody>
                 </Card>
             </div>

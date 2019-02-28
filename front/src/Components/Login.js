@@ -43,15 +43,14 @@ class Login extends Component {
     render() {
       const { from } = this.props.location.state || { from: { pathname: "/" } };
       const { redirectToReferrer } = this.state;
-  
-      if (redirectToReferrer) {
-        return <Redirect to={from} />;
+      console.log(localStorage.getItem('TOKEN')!=null)
+      if (redirectToReferrer|| localStorage.getItem('token')!=null) {
+        return <Redirect to='/' />;
       }
       
   
       return (
         <div>
-          <p>You must log in to view the page at {from.pathname}</p>
           <Form>
             <FormGroup >
                 <Label>Username or Email</Label>

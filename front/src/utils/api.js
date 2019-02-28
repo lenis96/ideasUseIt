@@ -12,8 +12,8 @@ export function signup(user){
       }})
 }
 
-export function getBoards(){
-    return axios.get('/api/boards/',{headers:{
+export function getBoards(search=''){
+    return axios.get(`/api/boards/?search=${search}`,{headers:{
         'TOKEN':localStorage.getItem('token')
     }})
 }

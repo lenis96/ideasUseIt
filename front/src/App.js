@@ -32,7 +32,6 @@ const AuthButton = withRouter(
   ({ history }) =>
     fakeAuth.isAuthenticated ? (
       <p>
-        Welcome!{" "}
         <button
           onClick={() => {
             fakeAuth.signout()
@@ -72,15 +71,19 @@ const Protected = () => <h3>Protected</h3>;
 
 
 class App extends Component {
+  constructor(props){
+    super(props)
+  }
+  
   render() {
     return (
-     
+      
     <Router>
       <div>
         <AuthButton />
         <ul>
           <li>
-            <Link to="/app">App</Link>
+            <Link to="/">App</Link>
           </li>
           <li>
             <Link to="/signup">Signup</Link>
@@ -88,7 +91,7 @@ class App extends Component {
         </ul>
         <Route path="/signup" component={SignupForm} />
         <Route path="/login" render={(props)=><Login {...props} fakeAuth={fakeAuth}/>} />
-        <PrivateRoute path="/app" component={AppIdeas} />
+        <Route exact path="/" component={AppIdeas} />
       </div>
     </Router>
       

@@ -18,7 +18,7 @@ import {IoMdAddCircle} from 'react-icons/io'
 class AppIdeas extends Component {
     constructor(props){
         super(props)
-        this.state={boards:[],modalCreateBoard:false,titleInput:'',publicBoard:null,descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
+        this.state={boards:[],searchInput:'',modalCreateBoard:false,titleInput:'',publicBoard:null,descriptionIdeaInput:'',boardId:null,modalCreateIdea:false}
     }
     componentDidMount(){
         this.updateBoards()
@@ -30,6 +30,7 @@ class AppIdeas extends Component {
         }));
       }
     toggleModalCreateIdea=(idBoard,idIdea)=> {
+        console.log(idIdea)
         this.setState(prevState => ({
           modalCreateIdea: !prevState.modalCreateIdea,
           boardId:idBoard,
@@ -38,9 +39,16 @@ class AppIdeas extends Component {
       }
 
     updateBoards=()=>{
-        getBoards().then(res=>{
+        getBoards(this.state.searchInput).then(res=>{
             this.setState({boards:res.data})
         })
+    }
+    changeSearch=(event)=>{
+        console.log(this.state)
+        this.setState({searchInput:event.target.value},()=>{
+            this.updateBoards()
+        })
+
     }
     
 
@@ -52,11 +60,15 @@ class AppIdeas extends Component {
         const ColStyle={
             marginTop:'32px'
         }
+        if(localStorage.getItem('token')==null) {
+            return <Redirect to='/login'/>;
+        }
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-12">
                         <h2>App Ideas</h2>
+                        <Input onChange={this.changeSearch} value={this.state.searchInput} placeholder='Search Board'></Input>
                     </div>
                 </div>
                 <div className="row">

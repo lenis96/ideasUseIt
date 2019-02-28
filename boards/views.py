@@ -48,7 +48,13 @@ class JWTAuthentication(authentication.BaseAuthentication):
 class BoardsList(APIView):
     authentication_classes = (JWTAuthentication,)
     def get(self,request):
-        boards=Board.objects.filter(Q(user_id=request.user.id)|Q(is_public=True)).order_by('-created')
+        if(request.GET.get('my')):
+            boards=Board.objects.filter(Q(user_id=request.user.id)).order_by('-created')
+        else:
+            if(request.GET.get('search')):
+                boards=Board.objects.filter(Q(user_id=request.user.id,title__icontains=request.GET.get('search'))|Q(is_public=True,title__icontains=request.GET.get('search'))).order_by('-created')
+            else:
+                boards=Board.objects.filter(Q(user_id=request.user.id)|Q(is_public=True)).order_by('-created')
         serrializer=BoardSerializer(boards,many=True)
         return Response(serrializer.data)
     def get_object(self, pk):
@@ -140,9 +146,10 @@ class IdeasDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        # TODO Validar dueño del tablero
         idea = self.get_object(pk)
-        request.data['user']=idea.user_id#TODO mejorar
+        if(not request.data.get('description')):
+            request.data['description']=idea.description
+        request.data['user']=idea.user_id
         serializer = IdeaSerializer(idea, data=request.data)
         if serializer.is_valid():
             serializer.save()
